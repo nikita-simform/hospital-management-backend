@@ -1,0 +1,500 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "RESTful APIs for hospital management ",
+        "version": "1.0.0",
+        "title": "Hospital management API"
+    },
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "tags": [
+        {
+            "name": "Users",
+            "description": "API for users"
+        },
+        {
+            "name": "Patients",
+            "description": "API for patients"
+        }
+    ],
+    "basePath": "/v1",
+    "paths": {
+        "/signup": {
+            "post": {
+                "description": "Add new user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "Add new user",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "description": "login user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "user credential",
+                        "in": "body",
+                        "description": "login with user credential",
+                        "schema": {
+                            "$ref": "#/definitions/Login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Login Successful",
+                        "schema": {
+                            "$ref": "#/definitions/loginResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "get": {
+                "description": "Logout user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User logged out successfully"
+                    }
+                }
+            }
+        },
+        "/patients/add": {
+            "post": {
+                "security": [ { "bearerAuth": [] } ],
+                "description": "create new patient",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Patients"
+                ],
+                "parameters": [
+                    {
+                        "name": "patient",
+                        "in": "body",
+                        "description": "Add new patient",
+                        "schema": {
+                            "$ref": "#/definitions/Patient"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "creating new patient Successful",
+                        "schema": {
+                            "$ref": "#/definitions/updatePatient"
+                        }
+                    }
+                }
+            }
+        },
+        "/patients/update": {
+            "put": {
+                "security": [ { "bearerAuth": [] } ],
+                "description": "update existing patient details",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Patients"
+                ],
+                "parameters": [
+                    {
+                        "name": "patient",
+                        "in": "body",
+                        "description": "update patient",
+                        "schema": {
+                            "$ref": "#/definitions/updatePatient"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update patient details Successful",
+                        "schema": {
+                            "$ref": "#/definitions/updatePatient"
+                        }
+                    }
+                }
+            }
+        },
+        "/patients/{id}": {    
+            "get": {
+                "security": [ { "bearerAuth": [] } ],
+                "description": "get existing patient",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Patients"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "patient id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/updatePatient"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [ { "bearerAuth": [] } ],
+                "description": "delete existing patient",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Patients"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "patient id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Patient details deleted successfully"
+                    }
+                }
+            }
+          
+        },
+       
+        "/patients/all": {
+            "get": {
+                "description": "get all patient",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Patients"
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "page number",
+                        "type":"number"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "quantity of records per page",
+                        "type":"number"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "sort field",
+                        "type":"string"
+                    },
+                    {
+                        "name": "direction",
+                        "in": "query",
+                        "description": "direction of sorting",
+                        "type":"string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/getAllPatientResponse"
+                        }
+                    }
+                },
+            "security": [ { "bearerAuth": [] } ]
+
+            }
+        },
+        "/patients/search/{searchKey}":{
+            "get":{
+                "security": [ { "bearerAuth": [] } ],
+                "description": "get patient matches with search key",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Patients"
+                ],
+                "parameters": [
+                    {
+                        "name": "searchKey",
+                        "in": "path",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/getAllPatientResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/patients/filter":{
+            "get":{
+                "security": [ { "bearerAuth": [] } ],
+                "description": "Filter patient by age",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Patients"
+                ],
+                "parameters": [
+                    {
+                        "name": "minAge",
+                        "in": "query",
+                        "description": "Minimum age of patient",
+                        "required": true,
+                        "type": "number"
+                    },
+                    {
+                        "name": "maxAge",
+                        "in": "query",
+                        "description": "Maximum age of patient",
+                        "required": true,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/getAllPatientResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/patients/upload":{
+            "post":{
+            "security": [ { "bearerAuth": [] } ],
+                "description":"upload CSV file",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Patients"
+                ],
+                "parameters": [
+                    {
+                        "name": "csvFile",
+                        "in": "formData",
+                        "description": "CSV file of patient details",
+                        "type": "file"
+                        
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "CSV file uploaded successfully"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "User": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string",
+                    "required": true
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "required": true
+                },
+                "password": {
+                    "type": "string",
+                    "required": true
+                }
+            }
+        },
+        "Login": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "required": true
+                },
+                "password": {
+                    "type": "string",
+                    "required": true
+                }
+            }
+        },
+        "loginResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                },
+                "user": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "email": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "Patient": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string",
+                    "required": true
+                },
+                "middleName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "age": {
+                    "type": "number"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "contact_number": {
+                    "type": "number"
+                },
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "updatePatient": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "required": true
+                },
+                "firstName": {
+                    "type": "string",
+                    "required": true
+                },
+                "middleName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "age": {
+                    "type": "number"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "contact_number": {
+                    "type": "number"
+                },
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "getAllPatientResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "patients": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "schema": {
+                                    "$ref": "#/definitions/updatePatient"
+                                }
+                            }
+                        },
+                        "total":{
+                            "type":"number"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "bearerAuth": {
+          "type": "apiKey",
+          "name": "Authorization",
+          "scheme": "bearer",
+          "in": "header"
+        }
+      }
+}
